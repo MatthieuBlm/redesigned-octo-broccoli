@@ -8,8 +8,27 @@ const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : `http://localhost:${port}`;
+const allowedOrigins = new Set([
+  'http://localhost:5173',
+  'http://localhost:5174',
+  ...(codespaceName ? [`https://${codespaceName}-5173.app.github.dev`] : []),
+]);
 
 app.use(express.json());
+app.use((request, response, next) => {
+  const origin = request.headers.origin;
+  if (origin && allowedOrigins.has(origin)) {
+    response.setHeader('Access-Control-Allow-Origin', origin);
+    response.setHeader('Vary', 'Origin');
+    response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  if (request.method === 'OPTIONS') {
+    response.sendStatus(204);
+    return;
+  }
+  next();
+});
 
 app.use('/api/users', createResourceRouter('users'));
 app.use('/api/teams', createResourceRouter('teams'));
