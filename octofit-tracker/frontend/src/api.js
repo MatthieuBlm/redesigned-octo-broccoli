@@ -8,7 +8,8 @@ const apiOrigin = codespaceName
     : 'http://localhost:8000'
 
 export async function fetchResource(endpoint) {
-  const response = await fetch(`${apiOrigin}${endpoint}`)
+  const url = endpoint.startsWith('http') ? endpoint : `${apiOrigin}${endpoint}`
+  const response = await fetch(url)
   if (!response.ok) throw new Error(`Unable to load ${endpoint} (${response.status})`)
   const payload = await response.json()
   if (Array.isArray(payload)) return payload
