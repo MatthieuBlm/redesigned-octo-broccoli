@@ -7,9 +7,9 @@ const apiOrigin = codespaceName
     ? `https://${codespaceHost}`
     : 'http://localhost:8000'
 
-export async function fetchResource(resource) {
-  const response = await fetch(`${apiOrigin}/api/${resource}/`)
-  if (!response.ok) throw new Error(`Unable to load ${resource} (${response.status})`)
+export async function fetchResource(endpoint) {
+  const response = await fetch(`${apiOrigin}${endpoint}`)
+  if (!response.ok) throw new Error(`Unable to load ${endpoint} (${response.status})`)
   const payload = await response.json()
   if (Array.isArray(payload)) return payload
   if (Array.isArray(payload.results)) return payload.results

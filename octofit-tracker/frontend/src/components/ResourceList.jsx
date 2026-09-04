@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
 import { fetchResource } from '../api.js'
 
-export default function ResourceList({ resource, title, description, columns, emptyMessage }) {
+export default function ResourceList({ endpoint, title, description, columns, emptyMessage }) {
   const [records, setRecords] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
 
   useEffect(() => {
     let active = true
-    fetchResource(resource).then((items) => {
+    fetchResource(endpoint).then((items) => {
       if (active) { setRecords(items); setStatus('ready') }
     }).catch((requestError) => {
       if (active) { setError(requestError.message); setStatus('error') }
     })
     return () => { active = false }
-  }, [resource])
+  }, [endpoint])
 
   return (
     <section className="resource-page">
