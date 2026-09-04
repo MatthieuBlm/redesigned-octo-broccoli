@@ -10,7 +10,7 @@ Define `VITE_CODESPACE_NAME` in `octofit-tracker/frontend/.env.local` with the C
 VITE_CODESPACE_NAME=your-codespace-name
 ```
 
-The variable is required for a Codespaces deployment. When it is unset, the frontend safely uses `http://localhost:8000` instead of building an `https://undefined-8000...` URL.
+The variable is recommended for a Codespaces deployment. When it is unset, the frontend derives the API URL from the current Codespaces hostname, for example `https://congenial-meme-44j5rrq9p6f7wqw-8000.app.github.dev` when the frontend is served from port `5173`. Outside Codespaces, it safely uses `http://localhost:8000` instead of building an `https://undefined-8000...` URL.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

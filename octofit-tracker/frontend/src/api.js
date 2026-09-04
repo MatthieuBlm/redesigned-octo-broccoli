@@ -1,7 +1,11 @@
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const browserHost = typeof window !== 'undefined' ? window.location.hostname : ''
+const codespaceHost = browserHost.replace(/-\d+\.app\.github\.dev$/, '-8000.app.github.dev')
 const apiOrigin = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000'
+  : codespaceHost !== browserHost
+    ? `https://${codespaceHost}`
+    : 'http://localhost:8000'
 
 export async function fetchResource(resource) {
   const response = await fetch(`${apiOrigin}/api/${resource}/`)
